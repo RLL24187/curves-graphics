@@ -1,13 +1,47 @@
 from display import *
 from matrix import *
 
-
+# /*======== void add_circle() ==========
+#   Inputs:   struct matrix * edges
+#             double cx
+#             double cy
+#             double r
+#             double step
+#   Adds the circle at (cx, cy) with radius r to edges
+#   ====================*/
 def add_circle( points, cx, cy, cz, r, step ):
-    pass
+    full_rot = 2 * math.pi()
+    while (theta = full_rot * step <= full_rot):
+        x = r * math.cos(theta) + cx
+        y = r * math.sin(theta) + cy
+        add_point(points, x, y, cz)
 
+# /*======== void add_curve() ==========
+# Inputs:   struct matrix *edges
+#          double x0
+#          double y0
+#          double x1
+#          double y1
+#          double x2
+#          double y2
+#          double x3
+#          double y3
+#          double step
+#          int type
+# Adds the curve bounded by the 4 points passsed as parameters
+# of type specified in type (see matrix.h for curve type constants)
+# to the matrix edges
+# ====================*/
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
+    p0 = [x0, y0, z0, 1]
+    p1 = [x1, y1, z1, 1]
+    p2 = [x2, y2, z2, 1]
+    p3 = [x3, y3, z3, 1]
+    if (curve_type == 0): #bezier
+        coefs = generate_curve_coefs(p0, p1, p2, p3, 0)
+    elif (curve_type == 1): #hermite
+        coefs = generate_curve_coefs(p0, p1, p2, p3, 1)
     pass
-
 
 def draw_lines( matrix, screen, color ):
     if len(matrix) < 2:
