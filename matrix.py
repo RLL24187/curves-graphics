@@ -36,9 +36,26 @@ def make_hermite():
     matrix[2][3]=1
     return matrix
 
+# /*======== struct matrix * generate_curve_coefs() ==========
+#   Inputs:   double p1
+#             double p2
+#             double p3
+#             double p4
+#             int type
+#   Returns:
+#   A matrix containing the values for a, b, c and d of the
+#   equation at^3 + bt^2 + ct + d for the curve defined
+#   by p1, p2, p3 and p4.
+#   Type determines whether the curve is bezier or hermite (see matrix.h)
+#   ====================*/
 def generate_curve_coefs( p0, p1, p2, p3, t ):
-    pass
-
+    if (t == 0):
+        matrix = make_bezier()
+    elif (t == 1):
+        matrix = make_hermite()
+    pts = [p0, p1, p2, p3]
+    matrix_mult(matrix, pts)
+    return pts #pts was edited so that its now the coeffs
 
 def make_translate( x, y, z ):
     t = new_matrix()
