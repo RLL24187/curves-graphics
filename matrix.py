@@ -11,29 +11,18 @@ import math
 
 def make_bezier():
     matrix = new_matrix()
-    matrix[0][0]=-1
-    matrix[0][1]=3
-    matrix[1][0]=3
-    matrix[0][2]=-3
-    matrix[1][1]=-6
-    matrix[2][0]=-3
-    matrix[0][3]=1
-    matrix[1][2]=3
-    matrix[2][1]=3
-    matrix[3][0]=1
+    matrix[0] = [-1,  3, -3, 1]
+    matrix[1] = [ 3, -6, 3, 0]
+    matrix[2] = [-3,  3, 0, 0]
+    matrix[3] = [ 1,  0, 0, 0]
     return matrix
 
 def make_hermite():
     matrix = new_matrix()
-    matrix[3][0]=1
-    matrix[0][1]=1
-    matrix[1][1]=1
-    matrix[2][1]=1
-    matrix[3][1]=1
-    matrix[2][2]=1
-    matrix[0][3]=3
-    matrix[1][3]=2
-    matrix[2][3]=1
+    matrix[0] = [ 2, -3, 0, 1]
+    matrix[1] = [-2,  3, 0, 0]
+    matrix[2] = [ 1, -2, 1, 0]
+    matrix[3] = [ 1, -1, 0, 0]
     return matrix
 
 # /*======== struct matrix * generate_curve_coefs() ==========
@@ -49,12 +38,11 @@ def make_hermite():
 #   Type determines whether the curve is bezier or hermite (see matrix.h)
 #   ====================*/
 def generate_curve_coefs( p0, p1, p2, p3, t ):
-    if (t == 0):
-        matrix = make_bezier()
-    elif (t == 1):
-        matrix = make_hermite()
-    pts = [p0, p1, p2, p3]
-    matrix_mult(matrix, pts)
+    pts = [[int(p0), int(p1), int(p2), int(p3)]]
+    if (t == 0): # bezier
+        matrix_mult(make_bezier(), pts)
+    elif (t == 1): # hermite
+        matrix_mult(make_hermite(), pts)
     return pts #pts was edited so that its now the coeffs
 
 def make_translate( x, y, z ):
