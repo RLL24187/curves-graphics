@@ -11,10 +11,17 @@ from matrix import *
 #   ====================*/
 def add_circle( points, cx, cy, cz, r, step ):
     full_rot = 2 * math.pi()
-    while (theta = full_rot * step <= full_rot):
-        x = r * math.cos(theta) + cx
-        y = r * math.sin(theta) + cy
-        add_point(points, x, y, cz)
+    t = 0
+    x0 = r * math.cos(0) + cx
+    y0 = r * math.sin(0) + cy
+    while (t < 1):
+        t += step
+        theta = full_rot * t
+        x1 = r * math.cos(theta) + cx
+        y1 = r * math.sin(theta) + cy
+        add_edge(points, x0, y0, cz, x1, y1, cz)
+        x0 = x1
+        y0 = y1
 
 # /*======== void add_curve() ==========
 # Inputs:   struct matrix *edges
@@ -33,15 +40,21 @@ def add_circle( points, cx, cy, cz, r, step ):
 # to the matrix edges
 # ====================*/
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
-    p0 = [x0, y0, z0, 1]
-    p1 = [x1, y1, z1, 1]
-    p2 = [x2, y2, z2, 1]
-    p3 = [x3, y3, z3, 1]
-    if (curve_type == 0): #bezier
-        coefs = generate_curve_coefs(p0, p1, p2, p3, 0)
-    elif (curve_type == 1): #hermite
-        coefs = generate_curve_coefs(p0, p1, p2, p3, 1)
-    pass
+    x_coefs = generate_curve_coefs(x0, x1, x2, x3, curve_type)
+    y_coefs = generate_curve_coefs(y0, y1, y2, y3, curve_type)
+    first_x = x0
+    first_y = y0
+    t = 0
+    while (t < 1):
+        t += step
+        t2 = t * t
+        t3 = t2 * t
+        second_x = x_coefs[0][0] * t3 + x_coefs[0][1] + t2 + x_coefs[0][2] * t + x_coefs[0][3]
+        second_y = y_coefs[0][0] * t3 + y_coefs[0][1] + t2 + y_coefs[0][2] * t + y_coefs[0][3]
+        add_edge(points, first_x, first_y, 0, second_x ,second_y, 0)
+        first_x = second_x
+        first_y = second_y
+
 
 def draw_lines( matrix, screen, color ):
     if len(matrix) < 2:
