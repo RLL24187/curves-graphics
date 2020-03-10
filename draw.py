@@ -10,7 +10,7 @@ from matrix import *
 #   Adds the circle at (cx, cy) with radius r to edges
 #   ====================*/
 def add_circle( points, cx, cy, cz, r, step ):
-    full_rot = 2 * math.pi()
+    full_rot = 2 * math.pi
     t = 0
     x0 = r * math.cos(0) + cx
     y0 = r * math.sin(0) + cy
@@ -42,6 +42,8 @@ def add_circle( points, cx, cy, cz, r, step ):
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
     x_coefs = generate_curve_coefs(x0, x1, x2, x3, curve_type)
     y_coefs = generate_curve_coefs(y0, y1, y2, y3, curve_type)
+    # print_matrix(x_coefs)
+    # print_matrix(y_coefs)
     first_x = x0
     first_y = y0
     t = 0
@@ -49,8 +51,8 @@ def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
         t += step
         t2 = t * t
         t3 = t2 * t
-        second_x = x_coefs[0][0] * t3 + x_coefs[0][1] + t2 + x_coefs[0][2] * t + x_coefs[0][3]
-        second_y = y_coefs[0][0] * t3 + y_coefs[0][1] + t2 + y_coefs[0][2] * t + y_coefs[0][3]
+        second_x = x_coefs[0][0] * t3 + x_coefs[0][1] * t2 + x_coefs[0][2] * t + x_coefs[0][3]
+        second_y = y_coefs[0][0] * t3 + y_coefs[0][1] * t2 + y_coefs[0][2] * t + y_coefs[0][3]
         add_edge(points, first_x, first_y, 0, second_x ,second_y, 0)
         first_x = second_x
         first_y = second_y
